@@ -1,6 +1,53 @@
 <?php include("../Conexion/Conexion.php") ?>
 
 <?php
+// Inicializamos las variables para almacenar los valores del formulario.
+$NamePerson = "";
+$LastNamePerson = "";
+$Year = "";
+$DateBirth = "";
+$Email = "";
+$Country = "";
+$departament = "";
+$mensaje = "";
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Capturamos los valores del formulario.
+    $NamePerson = $_POST["NamePerson"];
+    $LastNamePerson = $_POST["LastNamePerson"];
+    $Year = $_POST["Year"];
+    $DateBirth = $_POST["DateBirth"];
+    $Email = $_POST["Email"];
+    $Country = $_POST["Country"];
+    $department = $_POST["department"];
+
+    // Crear una instancia de la clase Conexion
+    $conexionBD = new Conexion();
+
+    // Validar el formulario
+    $validado = $conexionBD -> ValidarRegistroPe($NamePerson, $LastNamePerson,$Year,$DateBirth,$Email,$Country,$department);
+
+    if ($validado) {
+        // Si se encontraron coincidencias, permitir el acceso.
+        // Si se encontraron coincidencias, mostrar la alerta y permitir el acceso.
+        $mensaje = "Acceso denegado ya se encuentra registrado..";
+        echo '<script type="text/javascript">alert("'. $mensaje .'");window.location.href="../../BackPag/Registro/Registro.php";</script>';
+        exit(); // Asegurarse de salir del script después de la redirección.
+    }/*else if ($validadoA){
+        $mensaje = "Acceso permitido.";
+        header("location:indexAlumnos.php");
+        
+    } */else {
+        $mensaje = "Te registrate con Exito!!";
+        // Mostrar una alerta con JavaScript
+        echo '<script type="text/javascript">alert("' . $mensaje . '");window.location.href="../../BackPag/Pagina_Principal/Index.php";</script></script>';
+    }
+    
+}
+?>
+<?php
 if ($_POST) {
 
     $NamePerson = $_POST['NamePerson'];
