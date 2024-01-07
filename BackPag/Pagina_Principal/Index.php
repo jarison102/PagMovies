@@ -1,6 +1,35 @@
 <?php include("../Conexion/Conexion.php") ?>
 <?php 
-//echo ("Hola");
+// Obtén la información de la base de datos (aquí debes realizar la consulta específica para la película que deseas mostrar)
+$id = 65; // Cambia esto con el ID de la película que deseas mostrar
+$objconexion = new Conexion();
+// Verificar si se ha enviado el formulario de filtrado
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["categoria"])) {
+  $categoriaSeleccionada = $_POST["categoria"];
+  if ($categoriaSeleccionada === "Todas") {
+      // Si la categoría seleccionada es "Todas", mostrar todas las películas
+      $resultado = $objconexion->consultar("SELECT * FROM `registrarp`");
+  } else {
+      // Mostrar películas filtradas por categoría
+      $resultado = $objconexion->consultar("SELECT * FROM `registrarp` WHERE Categoria = '$categoriaSeleccionada'");
+  }
+} else {
+  // Si no se ha enviado el formulario, mostrar todas las películas
+  $resultado = $objconexion->consultar("SELECT * FROM `registrarp`");
+}
+
+// Verifica si la consulta fue exitosa y hay al menos una fila
+if ($resultado && count($resultado) > 0) {
+    $fila = $resultado[0];
+    $nombrePelicula = $fila['NameMovie'];
+    $rutaCaratula = $fila['Caratula'];
+    $Descripcion =$fila['Descripcion'];
+    $Categoria = $fila["Categoria"];
+} else {
+    // Película no encontrada
+    $nombrePelicula = "Película no encontrada";
+    $rutaCaratula = "../../Imagenes/No_encontrado.jpg"; // Cambia esto por la ruta de una imagen por defecto
+}
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +49,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+          <a class="nav-link active" aria-current="page" href="./Index.php">Inicio</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="../../BackPag/Registro/Registro.php">Registrarse</a>
@@ -31,84 +60,63 @@
         <li class="nav-item">
           <a class="nav-link" href="../../BackPag/Login/Login.php">Login</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Categoria
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Miedo</a></li>
-            <li><a class="dropdown-item" href="#">Suspenso</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Accion</a></li>
-          </ul>
-        </li>
-
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form action="" method="post" class="d-flex">
+      <label for="categoria" class="form-label">Filtrar por categoría:</label>
+      <select class="form-select" name="categoria" id="categoria">
+                    <option value="Todas">Todas</option>
+                    <option value="Terror">Terror</option>
+                    <option value="Animada">Animada</option>
+                    <option value="Accion">Acción</option>
+                    <option value="Intriga">Intriga</option>
+                    <!-- Agrega más opciones según tus categorías -->
+                </select>
+                <div class="d-flex">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+            </div>
       </form>
     </div>
   </div>
 </nav>
-<!--Primera fase-->
-<div class="row row-cols-1 row-cols-md-2 g-4">
-<div class="row row-cols-1 row-cols-md-2 g-4">
-  <div class="col">
-    <div class="card">
-      <a href="https://www.youtube.com/watch?v=zKccREwbRbs" target="_blank">
-        <img src="../../BackPag/Imagenes/Gato.jpg" class="card-img-top" alt="...">
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">El Gato del Sombrero Mágico</h5>
-        <p class="card-text">Descripción de la película o cualquier otro contenido que desees agregar.</p>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<div class="row row-cols-1 row-cols-md-2 g-4">
-  <div class="col">
-    <div class="card">
-      <a href="https://www.youtube.com/watch?v=sTdDiBywH8k" target="_blank">
-        <img src="../../BackPag/Imagenes/Campamento.jpg" class="card-img-top" alt="...">
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Campamento Lakebottom</h5>
-        <p class="card-text">Descripción de la película o cualquier otro contenido que desees agregar.</p>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Peliculas -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <link rel="stylesheet" href="ruta/a/tu/hoja/de/estilos.css">
+</head>
+<body>
 
-<div class="row row-cols-1 row-cols-md-2 g-4">
-  <div class="col">
-    <div class="card">
-      <a href="https://www.youtube.com/watch?v=Ggn6A_3xcaw" target="_blank">
-        <img src="../../BackPag/Imagenes/Bob.jpg" class="card-img-top" alt="...">
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Bob Esponja</h5>
-        <p class="card-text">Descripción de la película o cualquier otro contenido que desees agregar.</p>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="row row-cols-4 row-cols-md-4 g-2">
 
-<div class="row row-cols-1 row-cols-md-2 g-4">
-  <div class="col">
-    <div class="card">
-      <a href="https://www.youtube.com/watch?v=w-YfE1F9Pag" target="_blank">
-        <img src="../../BackPag/Imagenes/MADAGASCAR 3 PELICULA COMPLETA.webp" class="card-img-top" alt="...">
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">MADAGASCAR 3 PELICULA COMPLETA</h5>
-        <p class="card-text">Descripción de la película o cualquier otro contenido que desees agregar.</p>
-      </div>
-    </div>
-  </div>
-</div>
+<?php
+foreach ($resultado as $fila) {
+    $nombrePelicula = $fila['NameMovie'];
+    $rutaCaratula = $fila['Caratula'];
+    $url = $fila['url'];
+    $Descripcion =$fila['Descripcion'];
+    $Categoria =$fila['Categoria'];
+
+    // Mostrar la información de la película en forma de tarjeta
+    echo '<div class="col">';
+    echo '  <div class="card">';
+    echo '    <a href="' . $url . '" target="_blank">';
+    echo '      <img src="' . $rutaCaratula . '" class="card-img-top" alt="Carátula de la película ' . $nombrePelicula . '">';
+    echo '    </a>';
+    echo '    <div class="card-body">';
+    echo '      <h5 class="card-title">' . $nombrePelicula . '</h5>';
+    echo '      <p class="card-text">' . $Descripcion . '</p>';
+    echo '      <p class="card-text">' . $Categoria . '</p>';
+    echo '    </div>';
+    echo '  </div>';
+    echo '</div>';
+}
+?>
+
 </div>
 
 <!-- zona de peliculas 

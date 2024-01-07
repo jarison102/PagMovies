@@ -4,24 +4,41 @@ include("../Conexion/Conexion.php");
 $NameMovie = "";
 $DateMovie = "";
 $Year = "";
+$url = "";
+$Caratula = "";
+$Descripcion ="";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $NameMovie = $_POST["Movies"];
     $DateMovie = $_POST["income"];
     $Year = $_POST["Year"];
+    $url = $_POST["url"];
+    $Descripcion = $_POST["Descripcion"];
+    $Categoria = $_POST ["Categoria"];
 
-    $objconexion = new conexion();
+    // Obtener información del archivo
+    $caratulaNombre = $_FILES["Caratula"]["name"];
+    $caratulaTmp = $_FILES["Caratula"]["tmp_name"];
+    $caratulaSize = $_FILES["Caratula"]["size"];
+    $caratulaType = $_FILES["Caratula"]["type"];
 
-    $sql = "INSERT INTO `registrarp`(`id`, `NameMovie`, `DateMovie`, `Year`) VALUES (Null,'$NameMovie','$DateMovie','$Year');";
+    // Mover el archivo al directorio deseado
+    $directorioDestino = "../../Imagenes/";
+    $rutaCaratula = $directorioDestino . $caratulaNombre;
+    move_uploaded_file($caratulaTmp, $rutaCaratula);
+
+    // Insertar la información en la base de datos
+    $objconexion = new Conexion();
+
+    $sql = "INSERT INTO `registrarp`(`id`, `NameMovie`, `DateMovie`, `Year`, `url`, `Caratula`,`Descripcion`,`Categoria`) VALUES (NULL,'$NameMovie','$DateMovie','$Year','$url','$rutaCaratula','$Descripcion','$Categoria');";
 
     $objconexion->ejecutar($sql);
 
     echo "Formulario enviado"; // Agrega esta línea para verificar el envío del formulario
 }
 
-$objconexion = new conexion();
-$resultado = $objconexion->consultar("SELECT * FROM `registrarp`");
-//print_r($resultado);
+$objconexion = new Conexion();
+//$resultado = $objconexion->consultar("SELECT * FROM `registrarp`");
 ?>
 
 <!DOCTYPE html>
@@ -60,8 +77,29 @@ $resultado = $objconexion->consultar("SELECT * FROM `registrarp`");
                                         <br>
                                         <input type="number" class="form-control" placeholder="2020" name="Year" id="Year" value="" >
                                         <br>
+                                        URL:
+                                        <br>
+                                        <input type="text" class="form-control" placeholder="http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=moviespage&table=registrarp" name="url" id="url" value="" >
+                                        <br>
+                                        Carutula:
+                                        <br>
+                                        <input type="file" class="form-control" placeholder="https://img.freepik.com/foto-gratis/leon.jpg" name="Caratula" id="Caratula" value="" >
+                                        <br>
+                                        Descripcion:
+                                        <br>
+                                        <input type="text" class="form-control" placeholder="7 enanos en ruedas" name="Descripcion" id="Descripcion" value="" >
+                                        <br>
+                                        Categoria:
+                                        <br>
+                                        <select type="text" class="form-control" placeholder="Animada" name="Categoria" id="Categoria" value="" >
+                                            <option value="Terror">Terror</option>
+                                            <option value="Animada">Animada</option>
+                                            <option value="Accion">Accion</option>
+                                            <option value="Intriga">Intriga</option>
+                                        </select>
                                         <br>
                                         <button type="submit" class="btn btn-success">Enviar</button>
+                                        <br>
                                         <br>
                                     </form>
                                     <form action="../Pagina_Principal/Index.php" method="post">
