@@ -9,6 +9,7 @@ $DateBirth = "";
 $Email = "";
 $Country = "";
 $departament = "";
+$Cargo = "";
 $mensaje = "";
 
 
@@ -22,12 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $Email = $_POST["Email"];
     $Country = $_POST["Country"];
     $department = $_POST["department"];
+    $Cargo = $_POST['Cargo'];
 
     // Crear una instancia de la clase Conexion
     $conexionBD = new Conexion();
 
     // Validar el formulario
-    $validado = $conexionBD -> ValidarRegistroPe($NamePerson, $LastNamePerson,$Year,$DateBirth,$Email,$Country,$department);
+    $validado = $conexionBD -> ValidarRegistroPe($NamePerson, $LastNamePerson,$Year,$DateBirth,$Email,$Country,$department,$Cargo);
 
     if ($validado) {
         // Si se encontraron coincidencias, permitir el acceso.
@@ -57,17 +59,20 @@ if ($_POST) {
     $Email = $_POST['Email'];
     $Country = $_POST['Country'];
     $department = $_POST['department'];
+    $Cargo = $_POST ['Cargo'];
 
+    // Asignar id_cargo según la selección del usuario
+    $id_cargo = ($Cargo == 'Administrador') ? 2 : 1;
     $objconexion =  new conexion();
 
-    $sql = "INSERT INTO `registerperson`(`id`, `NamePerson`, `LastNamePerson`, `Year`, `DateBirth`,`Email`, `Country`,`department`) VALUES (Null,'$NamePerson','$LastNamePerson','$Year','$DateBirth','$Email','$Country','$department');";
+    $sql = "INSERT INTO `registerperson`(`id_registerperson`, `NamePerson`, `LastNamePerson`, `Year`, `DateBirth`, `Email`, `Country`, `department`, `Cargos`, `id_cargo`) VALUES (Null,'$NamePerson','$LastNamePerson','$Year','$DateBirth','$Email','$Country','$department','$Cargo', $id_cargo);";
 
     $objconexion->ejecutar($sql);
 }
 
 $objconexion =  new conexion();
 $resultado = $objconexion->consultar("SELECT * FROM `registerperson`");
-//print_r($resultado);
+print_r($resultado);
 
 ?>
 
@@ -126,7 +131,13 @@ $resultado = $objconexion->consultar("SELECT * FROM `registerperson`");
                                         <label for="department">Departamento:</label>
                                         <select id="NewDepartament" name="department" class="form-control">
                                             <!-- Aquí se llenarán los departamentos automáticamente -->
-                                        </select>   
+                                        </select>  
+                                        <br>
+                                        <label for="Cargos">Cargo:</label>
+                                        <select name="Cargo" id="Cargos" class="form-control">
+                                            <option value="User">Usuario</option>
+                                            <option value="Administrador">Administrador</option>
+                                        </select>
                                         <br>
                                         <button type="submit" class="btn btn-success">Enviar</button>
                                     </form>

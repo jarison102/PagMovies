@@ -42,8 +42,9 @@ class conexion{
 
     return ($count > 0); // Devolver true si se encontraron coincidencias, false de lo contrario
 }
-public function ValidarRegistroPe($NamePerson, $LastNamePerson,$Year,$DateBirth,$Email,$Country,$department) {
-    $sql = "SELECT * FROM `registerperson` WHERE NamePerson = :NamePerson AND LastNamePerson = :LastNamePerson AND Year = :Year AND DateBirth = :DateBirth AND Email =:Email AND Country =:Country AND department =:department";
+
+public function ValidarRegistroPe($NamePerson, $LastNamePerson,$Year,$DateBirth,$Email,$Country,$department,$Cargos) {
+    $sql = "SELECT * FROM `registerperson` WHERE NamePerson = :NamePerson AND LastNamePerson = :LastNamePerson AND Year = :Year AND DateBirth = :DateBirth AND Email =:Email AND Country =:Country AND department =:department AND Cargos =:Cargos";
     $stmt = $this->conexion->prepare($sql);
     $stmt->bindParam(':NamePerson', $NamePerson, PDO::PARAM_STR);
     $stmt->bindParam(':LastNamePerson', $LastNamePerson, PDO::PARAM_STR);
@@ -52,6 +53,7 @@ public function ValidarRegistroPe($NamePerson, $LastNamePerson,$Year,$DateBirth,
     $stmt->bindParam(':Email', $Email, PDO::PARAM_STR);
     $stmt->bindParam(':Country', $Country, PDO::PARAM_STR);
     $stmt->bindParam(':department', $department, PDO::PARAM_STR);
+    $stmt->bindParam(':Cargos', $Cargos, PDO::PARAM_STR);
     $stmt->execute();
     $count = $stmt->rowCount();
 
