@@ -1,4 +1,5 @@
 <?php include("../Conexion/Conexion.php") ?>
+<?php include("../Navbar/navbar.php")?>
 
 <?php
 // Inicializamos las variables para almacenar los valores del formulario.
@@ -42,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("location:indexAlumnos.php");
         
     } */else {
-        $mensaje = "Te registrate con Exito!!";
+        $mensaje = "Te registrate con Exito!! . ";
         // Mostrar una alerta con JavaScript
         echo '<script type="text/javascript">alert("' . $mensaje . '");window.location.href="../../BackPag/Pagina_Principal/Index.php";</script></script>';
     }
@@ -72,7 +73,7 @@ if ($_POST) {
 
 $objconexion =  new conexion();
 $resultado = $objconexion->consultar("SELECT * FROM `registerperson`");
-print_r($resultado);
+//print_r($resultado);
 
 ?>
 
@@ -82,82 +83,62 @@ print_r($resultado);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../Css/Formulario.css">
     <title>Document</title>
 </head>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="container">
-                    <div class="row justify-content-center align-items-center g-2">
-                        <div class="col-md-4">
-                            <br>
-                            <div class="card">
-                                <div class="card-header">
-                                    <center>
-                                        <h1>Registrarse</h1>
-                                    </center>
-                                </div>
-                                <div class="card-body">
-                                    <form action="./Registro.php" method="post" enctype="multipart/form-data">
-                                        <br>
-                                        Ingresa Tu Nombre:
-                                        <br>
-                                        <input type="text" class="form-control" placeholder="Jarison" name="NamePerson" id="NamePerson" value="">
-                                        <br>
-                                        Ingresa Tu Apellido:
-                                        <br>
-                                        <input type="text" class="form-control" placeholder="Cespedes" name="LastNamePerson" id="LastNamePerson" value="">
-                                        <br>
-                                        Ingresa Tus años:
-                                        <br>
-                                        <input type="text" class="form-control" placeholder="19" name="Year" id="Year" value="">
-                                        <br>
-                                        Ingresa tu Fecha de nacimiento:
-                                        <br>
-                                        <input type="date" class="form-control" placeholder="19" name="DateBirth" id="DateBirth" value="">
-                                        <br>
-                                        Ingresa Tu Correo:
-                                        <br>
-                                        <input type="text" class="form-control" placeholder="Jarimices@gmail.com" name="Email" id="Email" value="">
-                                        <br>
-                                        Ingresa Tu Pais:
-                                        <br>
-                                        <label for="Pais">País:</label>
-                                        <input type="text" class="form-control" placeholder="Colombia" name="Country" id="NewCountry" value="" oninput="UpdateDepartament()" required>
-                                        <br>
-                                        Ingresa Tu Departamento:
-                                        <br>
-                                        <label for="department">Departamento:</label>
-                                        <select id="NewDepartament" name="department" class="form-control">
+<div class="login-box">
+  <h2>Registro</h2>
+  <form action="./Registro.php" method="post" enctype="multipart/form-data">
+    <div class="user-box">
+      <input type="text" required="" class="form-control" name="NamePerson" id="NamePerson" value="">
+      <label>Ingresa Tu Nombre</label>
+    </div>
+
+    <div class="user-box">
+      <input type="text" class="form-control" name="LastNamePerson" id="LastNamePerson" value="" required="">
+      <label>Ingresa Tu Apellido</label>
+    </div>
+
+    <div class="user-box">
+      <input type="text" class="form-control" name="Year" id="Year" value="" required="">
+      <label>Ingresa Tus años</label>
+    </div>
+
+    <div class="user-box">
+      <input type="date" class="form-control" name="DateBirth" id="DateBirth" value="" required="">
+      <label>Ingresa tu Fecha de nacimiento</label>
+    </div>
+
+    <div class="user-box">
+      <input type="text" class="form-control" name="Email" id="Email" value="" required="">
+      <label>Ingresa Tu Correo</label>
+    </div>
+
+    <div class="user-box">
+      <input type="text" class="form-control" name="Country" id="NewCountry" value="" required="" oninput="UpdateDepartament()">
+      <label>Ingresa Tu Pais</label>
+    </div>
+
+    <div class="user-box">
+      <select id="NewDepartament" name="department" class="form-control">
                                             <!-- Aquí se llenarán los departamentos automáticamente -->
                                         </select>  
-                                        <br>
-                                        <label for="Cargos">Cargo:</label>
-                                        <select name="Cargo" id="Cargos" class="form-control">
-                                            <option value="User">Usuario</option>
-                                            <option value="Administrador">Administrador</option>
-                                        </select>
-                                        <br>
-                                        <button type="submit" class="btn btn-success">Enviar</button>
-                                    </form>
-                                    <br>
-                                    <form action="../../BackPag/Login/Login.php" method="post">
-                                        <button type="submit" class="btn btn-warning">Login</button>
-                                    </form>
-                                    
-                                </div>
-                                <div class="card-footer text-muted">
+    </div>
+  <br>
 
-                                </div>
-                            </div>
+      <select name="Cargo" id="Cargos" class="form-control">
+        <option value="User">Usuario</option>
+        <option value="Administrador">Administrador</option>
+      </select>
+<br>
 
-                        </div>
-                    </div>
-
-                </div>
+      <div class="user-box">
+                <button type="submit" class="btn btn-success">Enviar</button>
             </div>
-</body>
+  </form>
+</div>
+
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="../../animationsPage/AnimationsOne.js"></script>
 </html>

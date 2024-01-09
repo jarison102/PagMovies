@@ -28,6 +28,11 @@ class conexion{
         //retorna todos los elementos que tu puedas consultar con la sentencia sql
         return $sentencia->fetchAll();
     }
+    // Agrega un método prepare a tu clase Conexion
+    public function prepare($sql) {
+        return $this->conexion->prepare($sql);
+    }
+
 
 // La consulta selecciona todos los campos (*) de la tabla `registerperson`
 // donde el correo electrónico (Email) coincide con el valor proporcionado en el marcador de posición :Email
