@@ -61,7 +61,7 @@ function obtenerNombreUsuario($email) {
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Stackfindover: Sign in</title>
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="../../Css/Login.css">
 </head>
 
@@ -101,12 +101,12 @@ function obtenerNombreUsuario($email) {
             </div>
             <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
                 <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-                    <h1><a href="http://blog.stackfindover.com/" rel="dofollow">Stackfindover</a></h1>
+                    <h1><a href="" rel="dofollow">Login</a></h1>
                 </div>
                 <div class="formbg-outer">
                     <div class="formbg">
                         <div class="formbg-inner padding-horizontal--48">
-                            <span class="padding-bottom--15">Sign in to your account</span>
+                            <span class="padding-bottom--15">Iniciar sesión en su cuenta</span>
                             <form id="stripe-login" method="post" action="login.php">
                                 <div class="field padding-bottom--24">
                                     <label for="Email">Email</label>
@@ -118,24 +118,24 @@ function obtenerNombreUsuario($email) {
                                 </div>
                                 <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
                                     <label for="checkbox">
-                                        <input type="checkbox" name="checkbox" class="field-checkbox input" id="checkbox"> Stay signed in for a week
+                                        <input type="checkbox" name="checkbox" class="field-checkbox input" id="checkbox"> Permanecer registrado durante una semana
                                     </label>
                                 </div>
                                 <div class="field padding-bottom--24">
                                     <input type="submit" name="submit" value="Continue" class="input[type='submit']">
                                 </div>
                                 <div class="field">
-                                    <a class="ssolink" href="#">Use single sign-on (Google) instead</a>
+                                    <a class="ssolink" href="#">Utilice el inicio de sesión único (Google) en su lugar</a>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div class="footer-link padding-top--24">
-                        <span>Don't have an account? <a href="">Sign up</a></span>
+                        <span>¿No tienes una cuenta?  <a href="">Inscribirse</a></span>
                         <div class="listing padding-top--24 padding-bottom--24 flex-flex center-center">
-                            <span><a href="#">© Stackfindover</a></span>
-                            <span><a href="#">Contact</a></span>
-                            <span><a href="#">Privacy & terms</a></span>
+                            <span><a href="#">© Jarison Stived</a></span>
+                            <span><a href="#">Contacto</a></span>
+                            <span><a href="#">Privacidad y Terminos</a></span>
                         </div>
                     </div>
                 </div>

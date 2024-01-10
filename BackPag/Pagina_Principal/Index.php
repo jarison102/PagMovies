@@ -35,6 +35,14 @@ if ($resultado && count($resultado) > 0) {
   $nombrePelicula = "Película no encontrada";
   $rutaCaratula = "../../Imagenes/No_encontrado.jpg"; // Cambia esto por la ruta de una imagen por defecto
 }
+
+if ($_GET) {
+  $id = $_GET['borrar'];
+  $objconexion = new conexion();
+  $sql = "DELETE FROM `registrarp` WHERE `registrarp`.`id` = " . $id;
+  $objconexion->ejecutar($sql);
+}
+
 ?>
 
 <?php include("../Navbar/navbar.php")?>
@@ -50,6 +58,8 @@ if ($resultado && count($resultado) > 0) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Página Principal</title>
   <link rel="stylesheet" href="../../Css/Index.css">
+  <link rel="stylesheet" href="../../Css/ElevarC.css">
+<script src="https://cdn.jsdelivr.net/npm/get-image-colors"></script>
 </head>
 
 <body>
@@ -75,35 +85,61 @@ if ($resultado && count($resultado) > 0) {
 
 
 
-  <div class="row row-cols-4 row-cols-md-4 g-2">
+  <div class="row row-cols-2 row-cols-md-4 g-8">
     <?php
-    foreach ($resultado as $fila) {
-      $nombrePelicula = $fila['NameMovie'];
-      $rutaCaratula = $fila['Caratula'];
-      $url = $fila['url'];
-      $Descripcion = $fila['Descripcion'];
-      $Categoria = $fila['Categoria'];
+    
+    foreach ($resultado as $indice => $fila) {
+        $nombrePelicula = $fila['NameMovie'];
+        $rutaCaratula = $fila['Caratula'];
+        $url = $fila['url'];
+        $Descripcion = $fila['Descripcion'];
+        $Categoria = $fila['Categoria'];
 
-      // Mostrar la información de la película en forma de tarjeta
-      echo '<div class="col">';
-      echo '  <div class="card">';
-      echo '    <a href="' . $url . '" target="_blank">';
-      echo '      <img src="' . $rutaCaratula . '" class="card-img-top" alt="Carátula de la película ' . $nombrePelicula . '">';
-      echo '    </a>';
-      echo '    <div class="card-body">';
-      echo '      <h5 class="card-title">' . $nombrePelicula . '</h5>';
-      echo '      <p class="card-text">' . $Descripcion . '</p>';
-      echo '      <p class="card-text">' . $Categoria . '</p>';
-      echo '<button type="button" class="btn btn-dark">Ver</button>';
-      echo '<button type="button" class="btn btn-danger">Eliminar</button>';
-      echo '<button type="button" class="btn btn-warning">Editar</button>';
-      echo '    </div>';
-      echo '  </div>';
-      echo '</div>';
+        // Generar un ID único para cada modal
+        $modalID = 'verPeliculaModal' . $indice;
+
+        // Mostrar la información de la película en forma de tarjeta
+        echo '<div class="col"  onmouseover="showDetail(this)" onmouseout="hideDetail(this)"> ';
+        echo '  <div class="card">';
+        echo '    <a href="' . $url . '" target="_blank">';
+        echo '      <img src="' . $rutaCaratula . '" class="card-img-top" alt="Carátula de la película ' . $nombrePelicula . '">';
+        echo '    </a>';
+        echo '    <div class="card-body">';
+        echo '      <h5 class="card-title">' . $nombrePelicula . '</h5>';
+        echo '      <p class="card-text">' . $Descripcion . '</p>';
+        echo '      <p class="card-text">' . $Categoria . '</p>';
+        echo '      <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#' . $modalID . '">Ver Detalle de Pelicula</button>';
+        echo '<a href="?borrar=' . $fila['id'] . '" onclick="return confirm(\'¿Estás seguro de que deseas eliminar esta película?\');" class="btn btn-danger">Eliminar Pelicula</a>';
+        echo '<a href="EditMovies.php?id=' . $fila['id'] . '" class="btn btn-warning">Editar</a>';
+        echo '    </div>';
+        echo '  </div>';
+        echo '</div>';
+
+        // Contenido del modal específico para cada película
+        echo '<div class="modal fade" id="' . $modalID . '" tabindex="-1" role="dialog" aria-labelledby="' . $modalID . 'Label" aria-hidden="true">';
+        echo '  <div class="modal-dialog" role="document">';
+        echo '    <div class="modal-content">';
+        echo '      <div class="modal-header">';
+        echo '        <h5 class="modal-title" id="' . $modalID . 'Label">Detalles de la película.</h5>';
+        echo '        <button type="button" class="close" data-dismiss="modal" aria-label="Close">';
+        echo '          <span aria-hidden="true">&times;</span>';
+        echo '        </button>';
+        echo '      </div>';
+        echo '      <div class="modal-body">';
+        echo '        <h5 id="modalPeliculaTitulo"></h5>';
+        echo '        <img src="' . $rutaCaratula . '" class="card-img-top" alt="Carátula de la película ' . $nombrePelicula . '">';
+        echo '        <h5 id="modalPeliculaDescripcion">' . $nombrePelicula . '</h5>';
+        echo '        <p id="modalPeliculaDescripcion">' . $Descripcion . '</p>';
+        echo '        <p id="modalPeliculaCategoria">' . $Categoria . '</p> ';
+        echo '      </div>';
+        echo '    </div>';
+        echo '  </div>';
+        echo '</div>';
     }
     ?>
 </div>
 
+<!--Modal de politicas-->
 <a class="btn btn-dark" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
   Politicas de privacidad
 </a>
@@ -111,12 +147,106 @@ if ($resultado && count($resultado) > 0) {
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Politicas de privacidad</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <div>
-      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+
+
+    <!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad - Stived Films</title>
+    <link rel="stylesheet" href="tu_estilo.css">
+</head>
+
+<body>
+
+    <header>
+        <!-- Aquí podría ir el encabezado de tu página -->
+    </header>
+
+    <main>
+        <section id="politica-privacidad">
+            <h2>Política de Privacidad de Stived Films</h2>
+
+            <p>Última actualización: 1/06/2024</p>
+
+            <p>Bienvenido a Stived Films, la página de películas donde disfrutarás de la mejor experiencia cinematográfica. En Stived Films, valoramos y respetamos tu privacidad. Esta Política de Privacidad explica cómo recopilamos, utilizamos y protegemos la información personal que puedas proporcionarnos mientras utilizas nuestra plataforma.</p>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <h3>Información que Recopilamos</h3>
+
+            <p>1. **Información Personal:**<br>
+                Cuando te registras en Stived Films, recopilamos tu nombre de usuario y dirección de correo electrónico.</p>
+
+            <p>2. **Información de Navegación:**<br>
+                Recopilamos información sobre cómo utilizas nuestra plataforma, como las películas que ves y las páginas que visitas.</p>
+
+            <h3>Uso de la Información</h3>
+
+            <p>Utilizamos la información recopilada para:</p>
+            <ul>
+                <li>Personalizar tu experiencia en Stived Films.</li>
+                <li>Enviarte actualizaciones sobre nuevas películas y contenido relacionado.</li>
+                <li>Mejorar y optimizar nuestro servicio.</li>
+            </ul>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <h3>Compartir Información</h3>
+
+            <p>**No compartimos tu información personal con terceros** a menos que sea necesario para proporcionar nuestros servicios o cumplir con la ley.</p>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <h3>Cookies y Tecnologías Similares</h3>
+
+            <p>Utilizamos cookies y tecnologías similares para mejorar la funcionalidad de nuestra plataforma y ofrecerte una experiencia personalizada.</p>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <h3>Seguridad</h3>
+
+            <p>Tomamos medidas de seguridad para proteger tu información contra accesos no autorizados o alteraciones. Sin embargo, ten en cuenta que ninguna transmisión por internet es completamente segura.</p>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <h3>Menores de Edad</h3>
+
+            <p>Stived Films no está dirigido a menores de 13 años, y no recopilamos intencionalmente información de niños menores de esa edad.</p>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <h3>Cambios en la Política de Privacidad</h3>
+
+            <p>Nos reservamos el derecho de actualizar esta política en cualquier momento. Te notificaremos sobre cambios significativos a través de la plataforma o mediante el correo electrónico proporcionado.</p>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <h3>Contacto</h3>
+
+            <p>Si tienes preguntas o inquietudes sobre nuestra política de privacidad, por favor, contáctanos en [correo electrónico].</p>
+
+            <!-- Añade más secciones según sea necesario -->
+
+            <p>Gracias por elegir Stived Films para tu entretenimiento. ¡Disfruta de las películas!</p>
+        </section>
+    </main>
+
+    <footer>
+        <!-- Aquí podría ir el pie de página de tu página -->
+    </footer>
+
+</body>
+
+</html>
+
     </div>
 
     </div>
@@ -167,6 +297,18 @@ if ($resultado && count($resultado) > 0) {
 </div>
 -->
 
+
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../../animationsPage/Fly.js"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
