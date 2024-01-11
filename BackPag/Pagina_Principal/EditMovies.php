@@ -30,36 +30,43 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../Css/Formulario.css">
     <title>Página Principal</title>
 </head>
 
 <body>
+<div class="login-box">
     <form action="procesar_edicion.php" method="post" enctype="multipart/form-data">
+        <div class="user-box">
         <input type="hidden" name="id" value="<?php echo $pelicula['id']; ?>">
-        <label for="nuevo_nombre">Ingresa Tu nueva Película:</label>
+                <!--<label for="nuevo_nombre">Ingresa Tu nueva Película:</label>-->
         <input type="text" name="nuevo_nombre" id="nuevo_nombre" value="<?php echo $pelicula['NameMovie']; ?>" required>
+        </div>
         <br>
-        <label for="Nuevo_Año_de_la_película">Cuando se estreno la nueva pelicula</label>
+         <div class="user-box">
+                <!--<label for="Nuevo_Año_de_la_película">Cuando se estreno la nueva pelicula</label>-->
         <input type="date" name="Nuevo_Año_de_la_película" id="Nuevo_Año_de_la_película"
             value="<?php echo $pelicula['DateMovie']; ?>" required>
+            </div>
         <br>
-        <label for="Estreno_de_pelicula:">Estreno de pelicula:</label>
+         <div class="user-box">
+                <!--<label for="Estreno_de_pelicula:">Estreno de pelicula:</label>-->
         <input type="text" name="Estreno_de_pelicula" id="Estreno_de_pelicula"
             value="<?php echo $pelicula['Year']; ?>" required>
+            </div>
         <br>
-        <label for="Nueva_url">Nueva url:</label>
+         <div class="user-box">
+        <!--<label for="Nueva_url">Nueva url:</label>-->
         <input type="text" name="Nueva_url" id="Nueva_url" value="<?php echo $pelicula['url']; ?>" required>
+        </div>
         <br>
 
-        <div class="user-box">
-        <label for="Nueva_Caratula">Nueva Caratula:</label>
-        <input type="file" name="Nueva_Caratula" id="Nueva_Caratula">
-        <img src="<?php echo $pelicula['Caratula']; ?>" alt="Carátula actual">
-    </div>
         <br>
-        <label for="Nueva_Descripcion">Nueva Descripcion:</label>
+        <div class="user-box">
+        <!--<label for="Nueva_Descripcion">Nueva Descripcion:</label>-->
         <input type="text" name="Nueva_Descripcion" id="Nueva_Descripcion"
             value="<?php echo $pelicula['Descripcion']; ?>" required>
+            </div>
         <br>
 
         <select class="form-control" required="" name="Categoria" id="Categoria">
