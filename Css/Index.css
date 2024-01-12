@@ -1,3 +1,8 @@
 body{
   background-color: black;
 }
+/* Estilos personalizados */
+.btn-custom {
+  padding: 10px 20px; /* Ajusta el padding según tus preferencias */
+  font-size: 16px;   /* Ajusta el tamaño de fuente según tus preferencias */
+}
